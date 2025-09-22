@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Catálogo</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header del Panel de Administración -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-header-left">
+                <i class="fas fa-cogs"></i>
+                <h1>Panel de Administración</h1>
+            </div>
+            <div class="admin-header-right">
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i> Volver al Catálogo
+                </button>
+                <button class="btn btn-primary" onclick="saveChanges()">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="admin-main">
+        <div class="admin-container">
+            <!-- Panel de Control -->
+            <div class="admin-controls">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-box"></i>
+                        <div class="stat-info">
+                            <h3 id="totalProducts">0</h3>
+                            <p>Productos Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-images"></i>
+                        <div class="stat-info">
+                            <h3 id="totalCategories">0</h3>
+                            <p>Con Imágenes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <h3 id="lastUpdate">--</h3>
+                            <p>Última Actualización</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="addProductBtn">
+                        <i class="fas fa-plus"></i> Agregar Producto
+                    </button>
+                    <button class="btn btn-secondary" id="reloadProductsBtn">
+                        <i class="fas fa-sync"></i> Recargar
+                    </button>
+                    <button class="btn btn-info" onclick="exportProducts()">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                    <button class="btn btn-warning" onclick="importProducts()">
+                        <i class="fas fa-upload"></i> Importar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Productos -->
+            <div class="admin-products-section">
+                <h2>Productos del Catálogo</h2>
+                <div id="productsContainer" class="products-container">
+                    <!-- Los productos se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Formulario de Producto -->
+            <div id="productFormContainer" class="product-form-container" style="display: none;">
+                <div class="form-header">
+                    <h2 id="formTitle">Agregar Nuevo Producto</h2>
+                    <button class="btn btn-secondary" onclick="cancelEdit()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+                
+                <form id="productForm" class="product-form">
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto *</label>
+                        <input type="text" id="productName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">Descripción *</label>
+                        <textarea id="productDescription" name="description" rows="4" required></textarea>
+                    </div>
+                    
+                    <!-- Sección de Imágenes -->
+                    <div class="form-group">
+                        <label>Imágenes del Producto</label>
+                        <div id="imagesContainer" class="images-container">
+                            <!-- Las imágenes se agregarán dinámicamente -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addImageField()">
+                            <i class="fas fa-plus"></i> Agregar Imagen
+                        </button>
+                        <small>Puedes agregar múltiples imágenes para el producto</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productIcon">Icono (FontAwesome)</label>
+                        <input type="text" id="productIcon" name="icon" placeholder="fas fa-cog">
+                        <small>Ejemplo: fas fa-cog, fas fa-tools, fas fa-wrench</small>
+                    </div>
+                    
+                    <!-- Especificaciones -->
+                    <div class="form-group">
+                        <label>Especificaciones Técnicas</label>
+                        <div id="specificationsContainer" class="specifications-container">
+                            <!-- Los campos de especificaciones se agregarán dinámicamente -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addSpecificationField()">
+                            <i class="fas fa-plus"></i> Agregar Especificación
+                        </button>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="saveProductBtn">
+                            <i class="fas fa-save"></i> Agregar Producto
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer del Panel -->
+    <footer class="admin-footer">
+        <div class="admin-container">
+            <p>&copy; 2024 Panel de Administración - Catálogo. Todos los derechos reservados.</p>
+            <div class="admin-footer-links">
+                <a href="index.html">Ver Catálogo</a>
+                <a href="#" onclick="exportProducts()">Exportar Datos</a>
+                <a href="#" onclick="window.location.reload()">Recargar Panel</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="admin-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Panel Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test del Panel de Administración</h1>
+    
+    <div class="test-section">
+        <h2>1. Verificar products.json</h2>
+        <div id="jsonTest">Cargando...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Verificar funciones del admin</h2>
+        <div id="functionTest">Cargando...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Enlaces de prueba</h2>
+        <p><a href="admin-panel.html" target="_blank">Abrir Panel de Administración</a></p>
+        <p><a href="index.html" target="_blank">Abrir Catálogo Principal</a></p>
+        <p><a href="admin-access.html" target="_blank">Abrir Acceso Admin</a></p>
+    </div>
+
+    <script>
+        // Test 1: Verificar products.json
+        async function testJSON() {
+            const jsonTest = document.getElementById('jsonTest');
+            try {
+                const response = await fetch('products.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const data = await response.json();
+                jsonTest.innerHTML = `
+                    <span class="success">✅ products.json cargado correctamente</span><br>
+                    Productos: ${data.products.length}<br>
+                    Última actualización: ${data.lastUpdated}
+                `;
+            } catch (error) {
+                jsonTest.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Test 2: Verificar funciones del admin
+        function testFunctions() {
+            const functionTest = document.getElementById('functionTest');
+            const functions = [
+                'loadProducts',
+                'renderAdminInterface', 
+                'showAddProductForm',
+                'editProduct',
+                'deleteProduct',
+                'saveChanges',
+                'cancelEdit'
+            ];
+            
+            let results = [];
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    results.push(`<span class="success">✅ ${funcName}</span>`);
+                } else {
+                    results.push(`<span class="error">❌ ${funcName}</span>`);
+                }
+            });
+            
+            functionTest.innerHTML = results.join('<br>');
+        }
+        
+        // Ejecutar tests
+        document.addEventListener('DOMContentLoaded', function() {
+            testJSON();
+            testFunctions();
+        });
+    </script>
+</body>
+</html>

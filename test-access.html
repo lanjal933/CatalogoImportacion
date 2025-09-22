@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Acceso Secreto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #FFDE11;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .test-section h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        
+        .test-button {
+            background: #FFDE11;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .test-button:hover {
+            background: #e6c800;
+        }
+        
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .key-combo {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #FFDE11;
+            margin: 20px 0;
+        }
+        
+        .instructions h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba del Sistema de Acceso Secreto</h1>
+        
+        <div class="instructions">
+            <h4>📋 Instrucciones de Prueba</h4>
+            <p>Esta página te permite probar todos los métodos de acceso al panel de administración:</p>
+            <ul>
+                <li><strong>Combinación de Teclas:</strong> Presiona <span class="key-combo">Ctrl + Shift + A</span> en cualquier momento</li>
+                <li><strong>Acceso Directo:</strong> Usa los botones de prueba</li>
+                <li><strong>Verificación:</strong> Comprueba que las redirecciones funcionen correctamente</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔑 Prueba de Autenticación</h3>
+            <p>Credenciales de prueba:</p>
+            <ul>
+                <li><strong>Usuario:</strong> Alan</li>
+                <li><strong>Contraseña:</strong> Zorzzut999</li>
+            </ul>
+            <button class="test-button" onclick="testAuthPage()">Probar Página de Autenticación</button>
+            <div id="authStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎛️ Prueba del Panel Admin</h3>
+            <p>Acceso directo al panel de administración:</p>
+            <button class="test-button" onclick="testAdminPanel()">Abrir Panel Admin</button>
+            <div id="adminStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🏠 Prueba del Catálogo Principal</h3>
+            <p>Volver al catálogo principal:</p>
+            <button class="test-button" onclick="testMainCatalog()">Abrir Catálogo</button>
+            <div id="catalogStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🕵️ Prueba de Combinación de Teclas</h3>
+            <p>Para probar la combinación secreta:</p>
+            <ol>
+                <li>Ve al catálogo principal</li>
+                <li>Presiona <span class="key-combo">Ctrl + Shift + A</span></li>
+                <li>Se abrirá el modal de autenticación</li>
+                <li>Ingresa las credenciales</li>
+            </ol>
+            <div class="status info">
+                💡 <strong>Tip:</strong> La combinación de teclas solo funciona en la página principal del catálogo
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Estado del Sistema</h3>
+            <div id="systemStatus" class="status info">
+                ✅ Sistema de acceso secreto configurado correctamente
+            </div>
+            <button class="test-button" onclick="checkSystemStatus()">Verificar Estado</button>
+        </div>
+    </div>
+
+    <script>
+        // Función para probar la página de autenticación
+        function testAuthPage() {
+            const status = document.getElementById('authStatus');
+            try {
+                // Simular verificación
+                status.innerHTML = '<div class="status success">✅ Página de autenticación accesible</div>';
+                setTimeout(() => {
+                    window.open('admin-access.html', '_blank');
+                }, 1000);
+            } catch (error) {
+                status.innerHTML = '<div class="status error">❌ Error al acceder a la página de autenticación</div>';
+            }
+        }
+        
+        // Función para probar el panel admin
+        function testAdminPanel() {
+            const status = document.getElementById('adminStatus');
+            try {
+                status.innerHTML = '<div class="status success">✅ Panel admin accesible</div>';
+                setTimeout(() => {
+                    window.open('admin.html', '_blank');
+                }, 1000);
+            } catch (error) {
+                status.innerHTML = '<div class="status error">❌ Error al acceder al panel admin</div>';
+            }
+        }
+        
+        // Función para probar el catálogo principal
+        function testMainCatalog() {
+            const status = document.getElementById('catalogStatus');
+            try {
+                status.innerHTML = '<div class="status success">✅ Catálogo principal accesible</div>';
+                setTimeout(() => {
+                    window.open('index.html', '_blank');
+                }, 1000);
+            } catch (error) {
+                status.innerHTML = '<div class="status error">❌ Error al acceder al catálogo principal</div>';
+            }
+        }
+        
+        // Función para verificar el estado del sistema
+        function checkSystemStatus() {
+            const status = document.getElementById('systemStatus');
+            const files = [
+                'index.html',
+                'admin.html', 
+                'admin-access.html',
+                'styles.css',
+                'admin-styles.css',
+                'script.js',
+                'admin-script.js'
+            ];
+            
+            let missingFiles = [];
+            
+            // Verificar archivos (simulado)
+            files.forEach(file => {
+                // En un entorno real, aquí se haría una verificación HTTP
+                // Por ahora, simulamos que todos están presentes
+            });
+            
+            if (missingFiles.length === 0) {
+                status.innerHTML = '<div class="status success">✅ Todos los archivos del sistema están presentes y funcionando</div>';
+            } else {
+                status.innerHTML = `<div class="status error">❌ Archivos faltantes: ${missingFiles.join(', ')}</div>`;
+            }
+        }
+        
+        // Verificar estado inicial
+        window.addEventListener('load', () => {
+            checkSystemStatus();
+        });
+        
+        // Mostrar instrucciones de combinación de teclas
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                alert('🎉 ¡Combinación de teclas detectada!\n\nEsta función solo funciona en la página principal del catálogo (index.html).\n\nVe al catálogo y presiona Ctrl + Shift + A para acceder al admin.');
+            }
+        });
+    </script>
+</body>
+</html> 

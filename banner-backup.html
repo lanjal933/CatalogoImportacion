@@ -1,0 +1,47 @@
+<!-- ARCHIVO DE RESPALDO PARA BANNER -->
+<!-- Si la imagen de Unsplash no está disponible, puedes usar esta alternativa: -->
+
+<!-- Opción 1: Imagen local -->
+<!-- 
+<img src="banner-industrial.jpg" alt="Banner Industrial" class="banner-img">
+-->
+
+<!-- Opción 2: Gradiente CSS como respaldo -->
+<!-- 
+<div class="banner-img banner-gradient"></div>
+-->
+
+<!-- Opción 3: Icono grande como respaldo -->
+<!-- 
+<div class="banner-img banner-icon">
+    <i class="fas fa-industry"></i>
+</div>
+-->
+
+<!-- Estilos CSS adicionales para respaldos: -->
+<style>
+.banner-gradient {
+    background: linear-gradient(135deg, #FFDE11 0%, #e6c800 50%, #FFDE11 100%);
+    width: 100%;
+    height: 100%;
+}
+
+.banner-icon {
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.banner-icon i {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+</style> 

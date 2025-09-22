@@ -1,0 +1,42 @@
+{
+  "name": "catalogo-importaciones",
+  "version": "1.0.0",
+  "description": "Sistema de catálogo de productos con GitHub Pages y administración automática",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "dev": "npx http-server . -p 8080 -o --cors",
+    "update-catalog": "node scripts/update-catalog.js",
+    "validate-json": "node -e \"const fs=require('fs'); const data=JSON.parse(fs.readFileSync('products.json','utf8')); console.log('✅ products.json válido con', data.products.length, 'productos');\"",
+    "build": "echo 'Build completado - archivos listos para GitHub Pages'",
+    "deploy": "npm run update-catalog"
+  },
+  "keywords": [
+    "catalogo",
+    "productos",
+    "github-pages",
+    "javascript",
+    "html",
+    "css",
+    "importaciones",
+    "obras-seco"
+  ],
+  "author": "Sistema de Catálogo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usuario/catalogo-importaciones.git"
+  },
+  "homepage": "https://usuario.github.io/catalogo-importaciones/",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

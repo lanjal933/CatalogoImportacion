@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Catálogo Industrial</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header del Admin -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-brand">
+                <i class="fas fa-industry"></i>
+                <span>PANEL DE ADMINISTRACIÓN</span>
+            </div>
+            <nav class="admin-nav">
+                <a href="index.html" class="admin-nav-link">
+                    <i class="fas fa-home"></i> Volver al Catálogo
+                </a>
+                <a href="#" class="admin-nav-link" onclick="showSection('dashboard')">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="admin-nav-link" onclick="showSection('products')">
+                    <i class="fas fa-box"></i> Productos
+                </a>
+                <a href="#" class="admin-nav-link" onclick="showSection('add-product')">
+                    <i class="fas fa-plus"></i> Agregar Producto
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="admin-main">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="admin-section active">
+            <div class="section-header">
+                <h1>Dashboard de Administración</h1>
+                <p>Resumen general del catálogo y estadísticas</p>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalProducts">0</div>
+                        <div class="stat-label">Total Productos</div>
+                    </div>
+                </div>
+                
+
+                
+                
+            </div>
+            
+
+            
+            <div class="recent-activity">
+                <h3>Actividad Reciente</h3>
+                <div class="activity-list" id="activityList">
+                    <!-- Actividad se cargará dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Gestión de Productos Section -->
+        <section id="products" class="admin-section">
+            <div class="section-header">
+                <h1>Gestión de Productos</h1>
+                <p>Administra todos los productos del catálogo</p>
+            </div>
+            
+            <div class="products-controls">
+                <div class="search-controls">
+                    <input type="text" id="adminSearchInput" placeholder="Buscar productos..." class="search-input">
+                </div>
+                <button class="btn btn-primary" onclick="showSection('add-product')">
+                    <i class="fas fa-plus"></i> Nuevo Producto
+                </button>
+                <button class="btn btn-secondary" onclick="testAddProduct()">
+                    <i class="fas fa-test-tube"></i> Probar Agregar
+                </button>
+            </div>
+            
+            <div class="products-table-container">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                        <!-- Productos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Agregar/Editar Producto Section -->
+        <section id="add-product" class="admin-section">
+            <div class="section-header">
+                <h1 id="formTitle">Agregar Nuevo Producto</h1>
+                <p>Completa la información del producto</p>
+            </div>
+            
+            <form id="productForm" class="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto *</label>
+                        <input type="text" id="productName" name="name" required>
+                    </div>
+                    
+
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Descripción *</label>
+                    <textarea id="productDescription" name="description" rows="4" required></textarea>
+                </div>
+                
+
+                
+                <div class="form-group">
+                    <label for="productImage">Imágenes del Producto</label>
+                    <div class="multiple-images-container">
+                        <!-- Contenedor principal para múltiples imágenes -->
+                        <div class="images-grid" id="imagesGrid">
+                            <!-- Las imágenes se agregarán aquí dinámicamente -->
+                        </div>
+                        
+                        <!-- Botón para agregar más imágenes -->
+                        <div class="add-image-container">
+                            <button type="button" class="btn btn-secondary add-image-btn" onclick="addImageUploader()">
+                                <i class="fas fa-plus"></i> Agregar Imagen
+                            </button>
+                            <small>Puedes agregar múltiples imágenes. Formatos: JPG, PNG, GIF | Máximo: 5MB por imagen</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Especificaciones Técnicas</label>
+                    <div id="specificationsContainer">
+                        <div class="specification-row">
+                            <input type="text" placeholder="Nombre de la especificación" class="spec-name">
+                            <input type="text" placeholder="Valor" class="spec-value">
+                            <button type="button" class="btn btn-secondary btn-small" onclick="removeSpecification(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="addSpecification()">
+                        <i class="fas fa-plus"></i> Agregar Especificación
+                    </button>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Producto
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-undo"></i> Limpiar Formulario
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="showSection('products')">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirmModalTitle">Confirmar Acción</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmModalMessage">¿Estás seguro de que quieres realizar esta acción?</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
+                <button class="btn btn-danger" id="confirmModalButton">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Producto</h3>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="edit-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editName">Nombre *</label>
+                            <input type="text" id="editName" required>
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDescription">Descripción *</label>
+                        <textarea id="editDescription" rows="3" required></textarea>
+                    </div>
+                    
+                    
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test GitHub Pages - Modal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test GitHub Pages - Modal</h1>
+        
+        <div id="status"></div>
+        
+        <h2>Pruebas:</h2>
+        <button class="test-button" onclick="testModal()">Probar Modal</button>
+        <button class="test-button" onclick="testImages()">Probar Imágenes</button>
+        <button class="test-button" onclick="testProducts()">Probar Productos</button>
+        
+        <h2>Productos de Prueba:</h2>
+        <div class="products-grid" id="productsGrid">
+            <!-- Los productos se cargarán aquí -->
+        </div>
+    </div>
+
+    <!-- Modal de Producto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <div class="modal-body">
+                <!-- Contenido del modal se cargará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let products = [];
+        let productModal;
+        let modalBody;
+
+        // Productos de prueba
+        const testProducts = [
+            {
+                id: 1,
+                name: "Wpc interior nogal con fondo negro",
+                description: "WPC (Wood Plastic Composite) para uso interior con acabado nogal y fondo negro.",
+                image: "productos/Wpcinteriornogalconfondonegro.jpg",
+                specifications: {
+                    "Tipo": "WPC Interior",
+                    "Acabado": "Nogal con fondo negro",
+                    "Uso": "Interior",
+                    "Material": "Wood Plastic Composite"
+                }
+            },
+            {
+                id: 2,
+                name: "Wpc interior negro",
+                description: "WPC (Wood Plastic Composite) para uso interior en color negro.",
+                image: "productos/Wpcinteriornegro.jpg",
+                specifications: {
+                    "Tipo": "WPC Interior",
+                    "Color": "Negro",
+                    "Uso": "Interior",
+                    "Material": "Wood Plastic Composite"
+                }
+            }
+        ];
+
+        function showStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function testModal() {
+            showStatus('Probando modal...', 'info');
+            
+            if (!productModal) {
+                productModal = document.getElementById('productModal');
+            }
+            if (!modalBody) {
+                modalBody = document.querySelector('.modal-body');
+            }
+            
+            if (productModal && modalBody) {
+                modalBody.innerHTML = `
+                    <div class="product-modal">
+                        <div class="product-modal-header">
+                            <h2>Test Modal</h2>
+                        </div>
+                        <div class="product-modal-content">
+                            <div class="modal-image">
+                                <img src="productos/Wpcinteriornogalconfondonegro.jpg" alt="Test Image" class="product-modal-image" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                            </div>
+                            <div class="product-modal-details">
+                                <p>Este es un test del modal en GitHub Pages.</p>
+                                <button class="btn btn-primary" onclick="closeProductModal()">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                productModal.style.display = 'block';
+                showStatus('✅ Modal abierto correctamente', 'success');
+            } else {
+                showStatus('❌ Error: Modal no disponible', 'error');
+            }
+        }
+
+        function testImages() {
+            showStatus('Probando carga de imágenes...', 'info');
+            
+            const images = [
+                'productos/Wpcinteriornogalconfondonegro.jpg',
+                'productos/Wpcinteriornegro.jpg',
+                'productos/Wpcexteriornegro.jpg',
+                'productos/Wpcexteriornogaloscuro.jpg'
+            ];
+            
+            let loaded = 0;
+            let failed = 0;
+            
+            images.forEach((src, index) => {
+                const img = new Image();
+                img.onload = () => {
+                    loaded++;
+                    if (loaded + failed === images.length) {
+                        if (failed === 0) {
+                            showStatus(`✅ Todas las imágenes cargadas correctamente (${loaded}/${images.length})`, 'success');
+                        } else {
+                            showStatus(`⚠️ ${loaded} imágenes cargadas, ${failed} fallaron`, 'error');
+                        }
+                    }
+                };
+                img.onerror = () => {
+                    failed++;
+                    if (loaded + failed === images.length) {
+                        showStatus(`❌ ${failed} imágenes fallaron al cargar`, 'error');
+                    }
+                };
+                img.src = src;
+            });
+        }
+
+        function testProducts() {
+            showStatus('Probando productos...', 'info');
+            
+            products = testProducts;
+            const productsGrid = document.getElementById('productsGrid');
+            
+            productsGrid.innerHTML = products.map(product => `
+                <div class="product-card" data-product-id="${product.id}">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <button class="btn btn-primary" onclick="viewProduct(${product.id})">Ver Detalles</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            showStatus(`✅ ${products.length} productos cargados`, 'success');
+        }
+
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                showStatus('❌ Producto no encontrado', 'error');
+                return;
+            }
+            
+            if (!productModal) {
+                productModal = document.getElementById('productModal');
+            }
+            if (!modalBody) {
+                modalBody = document.querySelector('.modal-body');
+            }
+            
+            modalBody.innerHTML = `
+                <div class="product-modal">
+                    <div class="product-modal-header">
+                        <h2>${product.name}</h2>
+                    </div>
+                    <div class="product-modal-content">
+                        <div class="modal-image">
+                            <img src="${product.image}" alt="${product.name}" class="product-modal-image" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                        </div>
+                        <div class="product-modal-details">
+                            <p class="product-description">${product.description}</p>
+                            <div class="product-specifications">
+                                <h4>Especificaciones Técnicas:</h4>
+                                <ul>
+                                    ${Object.entries(product.specifications).map(([key, value]) => 
+                                        `<li><strong>${key}:</strong> ${value}</li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                            <button class="btn btn-primary" onclick="closeProductModal()">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            productModal.style.display = 'block';
+            showStatus(`✅ Modal abierto para: ${product.name}`, 'success');
+        }
+
+        function closeProductModal() {
+            if (productModal) {
+                productModal.style.display = 'none';
+            }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('Página cargada. Haz clic en los botones para probar.', 'info');
+            
+            // Inicializar elementos del modal
+            productModal = document.getElementById('productModal');
+            modalBody = document.querySelector('.modal-body');
+            
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', (e) => {
+                if (e.target === productModal) {
+                    closeProductModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Importaciones - Soluciones Profesionales</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <i class="fas fa-industry"></i>
+                <img src="IMG/logo-803079312-1743084688-83974433b8c240cc7f675c7ba710d1fb1743084688.jpg" alt="Logo" height="100px">
+            </div>
+            <h5 style="font-size: 1.2rem; font-weight: bold; margin-left: -1650px; margin-top: 100px;">Importaciones</h5>
+            <ul class="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#productos" class="nav-link">Productos</a></li>
+                <!-- Enlace al admin oculto - accesible solo por combinación de teclas -->
+                <li style="display: none;"><a href="#" class="nav-link admin-link" id="hiddenAdminLink">
+                    <i class="fas fa-cog"></i> Admin
+                </a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Banner de Imagen -->
+    <section class="banner">
+        <div class="banner-image">
+            <img src="IMG/Banner-bueno.jpg" alt="Banner Industrial" class="banner-img" height="400px" onclick="openProductImageZoom('IMG/Banner-bueno.jpg', 'Catálogo Obra Seco', 'productos/Wpcexteriornegro-instalado.jpg')">
+            <div class="banner-overlay">
+                <div class="banner-content">
+                    <h1 class="banner-title">Catálogo de </h1> 
+                    <h1 class="banner-title" style="color: #FFDE11; font-weight: 700;">Obra Seco</h1>
+                    <p class="banner-subtitle">Soluciones de alta calidad para Obras de Construcción</p>
+                    <div class="banner-buttons">
+                        <a href="#productos" class="btn btn-primary">Ver Productos</a>
+                        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos Section -->
+    <section id="productos" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nuestros Productos</h2>
+                <p>Catálogo completo de soluciones para obras mayoristas</p>
+            </div>
+            
+            <!-- Filtros -->
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar productos...">
+                    <i class="fas fa-search"></i>
+                    <div class="search-hint" style="font-size: 0.8rem; color: #666; margin-top: 0.5rem; text-align: center;">
+                        💡 <strong>Tip:</strong> Escribe el producto que buscas
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Productos -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Los productos se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Industrial Catalog</h3>
+                    <p>Líder en soluciones industriales con más de 25 años de experiencia en el mercado.</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/5491160104818?text=Hola,%20me%20interesa%20información%20sobre%20sus%20productos%20industriales" target="_blank" class="social-link whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            <span class="social-tooltip">WhatsApp</span>
+                        </a>
+                        <a href="https://www.instagram.com/obraseco/?hl=es" target="_blank" class="social-link instagram">
+                            <i class="fab fa-instagram"></i>
+                            <span class="social-tooltip">Instagram</span>
+                        </a>
+                        <a href="#" class="social-link facebook">
+                            <i class="fab fa-facebook"></i>
+                            <span class="social-tooltip">Facebook</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Productos</h4>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/5491160104818?text=Hola,%20me%20interesa%20información%20sobre%20sus%20productos" target="_blank">+54 9 11 6010-4818</a></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Av Balbin, Av. Italia 3195</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Industrial Catalog. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Autenticación para Admin -->
+    <div id="authModal" class="modal auth-modal">
+        <div class="modal-content auth-content">
+            <span class="close auth-close">&times;</span>
+            <div class="modal-body">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Acceso Administrativo</h3>
+                        <p>Ingrese la contraseña para acceder al panel de administración</p>
+                    </div>
+                    <form id="authForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="adminPassword">Contraseña:</label>
+                            <input type="password" id="adminPassword" placeholder="Ingrese la contraseña" required>
+                        </div>
+                        <div class="auth-buttons">
+                            <button type="submit" class="btn btn-primary">Acceder</button>
+                            <button type="button" class="btn btn-secondary auth-cancel">Cancelar</button>
+                        </div>
+                    </form>
+                    <div class="auth-hint">
+                        <p><i class="fas fa-info-circle"></i> Acceso secreto: Presione <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd> o <kbd>Escribir</kbd> Admin <kbd></p>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="resetAdminAccess()" style="margin-top: 1rem;">
+                            <i class="fas fa-undo"></i> Ocultar Botón Admin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Producto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <!-- Contenido del modal se cargará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Imagen Ampliada -->
+    <div id="imageZoomModal" class="image-zoom-modal">
+        <div class="image-zoom-content">
+            <span class="image-zoom-close" onclick="closeImageZoom()">&times;</span>
+            <img id="imageZoomImage" class="image-zoom-image" alt="Imagen Ampliada">
+            <div class="image-zoom-info" id="imageZoomInfo">
+                <!-- Información de la imagen -->
+            </div>
+            <div class="image-zoom-nav" id="imageZoomNav">
+                <!-- Navegación entre imágenes -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón flotante de WhatsApp -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/5491160104818?text=Hola,%20me%20interesa%20información%20sobre%20sus%20productos%20industriales" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+            <span class="whatsapp-tooltip">¡Chatea con nosotros!</span>
+        </a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

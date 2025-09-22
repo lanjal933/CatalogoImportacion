@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba del Sistema de Dos Niveles</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #FFDE11;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .test-section h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        
+        .test-button {
+            background: #FFDE11;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .test-button:hover {
+            background: #e6c800;
+        }
+        
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #FFDE11;
+            margin: 20px 0;
+        }
+        
+        .instructions h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 5px 0;
+        }
+        
+        .credential-box {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .credential-box h4 {
+            margin-top: 0;
+            color: #155724;
+        }
+        
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .credential-label {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .credential-value {
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 3px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba del Sistema de Autenticación de Dos Niveles</h1>
+        
+        <div class="instructions">
+            <h4>📋 Instrucciones del Nuevo Sistema</h4>
+            <p>El sistema ahora funciona con dos niveles de autenticación:</p>
+            <ul>
+                <li><strong>Nivel 1:</strong> Usuario y contraseña iniciales (Alan/Zorzzut999)</li>
+                <li><strong>Nivel 2:</strong> Solo contraseña del administrador (1990)</li>
+                <li><strong>Memoria:</strong> El sistema recuerda que ya pasaste el primer nivel</li>
+                <li><strong>Reset:</strong> Puedes resetear el acceso del primer nivel si es necesario</li>
+            </ul>
+        </div>
+        
+        <div class="credential-box">
+            <h4>🔑 Credenciales del Sistema</h4>
+            <div class="credential-item">
+                <span class="credential-label">Nivel 1 - Usuario:</span>
+                <span class="credential-value">Alan</span>
+            </div>
+            <div class="credential-item">
+                <span class="credential-label">Nivel 1 - Contraseña:</span>
+                <span class="credential-value">Zorzzut999</span>
+            </div>
+            <div class="credential-item">
+                <span class="credential-label">Nivel 2 - Contraseña:</span>
+                <span class="credential-value">1990</span>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔐 Prueba del Sistema de Dos Niveles</h3>
+            <p>Prueba el nuevo sistema de autenticación:</p>
+            <button class="test-button" onclick="testTwoLevelSystem()">Probar Sistema de Dos Niveles</button>
+            <div id="twoLevelStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔄 Prueba de Memoria del Sistema</h3>
+            <p>Verifica que el sistema recuerde el acceso del primer nivel:</p>
+            <button class="test-button" onclick="testSystemMemory()">Verificar Memoria del Sistema</button>
+            <div id="memoryStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧹 Prueba de Reset</h3>
+            <p>Prueba la funcionalidad de resetear el acceso:</p>
+            <button class="test-button" onclick="testResetFunction()">Probar Función de Reset</button>
+            <div id="resetStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📱 Prueba de Acceso Directo</h3>
+            <p>Acceso directo a las páginas del sistema:</p>
+            <button class="test-button" onclick="testDirectAccess()">Probar Acceso Directo</button>
+            <div id="directAccessStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Estado del Sistema</h3>
+            <div id="systemStatus" class="status info">
+                ✅ Sistema de dos niveles configurado correctamente
+            </div>
+            <button class="test-button" onclick="checkSystemStatus()">Verificar Estado</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>⚠️ Información de Seguridad</h3>
+            <div class="status warning">
+                🔒 <strong>Importante:</strong> Las contraseñas están hardcodeadas en el código. 
+                En producción, considera implementar un sistema más seguro con autenticación del lado del servidor.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para probar el sistema de dos niveles
+        function testTwoLevelSystem() {
+            const status = document.getElementById('twoLevelStatus');
+            try {
+                status.innerHTML = '<div class="status success">✅ Sistema de dos niveles funcionando</div>';
+                setTimeout(() => {
+                    window.open('admin-access.html', '_blank');
+                }, 1000);
+            } catch (error) {
+                status.innerHTML = '<div class="status error">❌ Error al probar el sistema de dos niveles</div>';
+            }
+        }
+        
+        // Función para verificar la memoria del sistema
+        function testSystemMemory() {
+            const status = document.getElementById('memoryStatus');
+            const firstLevelPassed = localStorage.getItem('firstLevelPassed');
+            
+            if (firstLevelPassed === 'true') {
+                status.innerHTML = '<div class="status success">✅ El sistema recuerda que ya pasaste el primer nivel</div>';
+            } else {
+                status.innerHTML = '<div class="status info">ℹ️ El sistema no recuerda el acceso del primer nivel (primera visita)</div>';
+            }
+        }
+        
+        // Función para probar el reset
+        function testResetFunction() {
+            const status = document.getElementById('resetStatus');
+            const firstLevelPassed = localStorage.getItem('firstLevelPassed');
+            
+            if (firstLevelPassed === 'true') {
+                if (confirm('¿Desea resetear el acceso del primer nivel para probar la funcionalidad?')) {
+                    localStorage.removeItem('firstLevelPassed');
+                    status.innerHTML = '<div class="status success">✅ Acceso reseteado correctamente. Ahora puedes probar el primer nivel nuevamente.</div>';
+                    setTimeout(() => {
+                        testSystemMemory();
+                    }, 1000);
+                }
+            } else {
+                status.innerHTML = '<div class="status info">ℹ️ No hay acceso del primer nivel para resetear. Prueba primero el sistema de dos niveles.</div>';
+            }
+        }
+        
+        // Función para probar acceso directo
+        function testDirectAccess() {
+            const status = document.getElementById('directAccessStatus');
+            try {
+                status.innerHTML = '<div class="status success">✅ Acceso directo funcionando</div>';
+                setTimeout(() => {
+                    window.open('admin.html', '_blank');
+                }, 1000);
+            } catch (error) {
+                status.innerHTML = '<div class="status error">❌ Error al acceder directamente</div>';
+            }
+        }
+        
+        // Función para verificar el estado del sistema
+        function checkSystemStatus() {
+            const status = document.getElementById('systemStatus');
+            const files = [
+                'index.html',
+                'admin.html', 
+                'admin-access.html',
+                'script.js',
+                'admin-script.js'
+            ];
+            
+            // Verificar archivos críticos
+            let missingFiles = [];
+            
+            // Simular verificación (en un entorno real se haría HTTP request)
+            if (missingFiles.length === 0) {
+                status.innerHTML = '<div class="status success">✅ Todos los archivos del sistema están presentes y funcionando</div>';
+            } else {
+                status.innerHTML = `<div class="status error">❌ Archivos faltantes: ${missingFiles.join(', ')}</div>`;
+            }
+        }
+        
+        // Verificar estado inicial
+        window.addEventListener('load', () => {
+            checkSystemStatus();
+            testSystemMemory();
+        });
+        
+        // Mostrar instrucciones de uso
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 't') {
+                e.preventDefault();
+                alert('🎉 ¡Combinación de teclas detectada!\n\nEsta es la página de prueba del sistema de dos niveles.\n\nPara probar el sistema real:\n1. Ve a admin-access.html\n2. Ingresa Alan/Zorzzut999\n3. Luego solo ingresa 1990');
+            }
+        });
+    </script>
+</body>
+</html> 

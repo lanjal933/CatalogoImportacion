@@ -1,0 +1,234 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Permite ejecutar manualmente el workflow
+  workflow_dispatch:
+
+# Permisos necesarios para GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evitar ejecuciones concurrentes
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Job para construir el sitio
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Verificar estructura del proyecto
+      run: |
+        echo "Verificando archivos del proyecto..."
+        ls -la
+        echo "Verificando products.json..."
+        if [ -f "products.json" ]; then
+          echo "✅ products.json encontrado"
+          echo "Contenido del archivo:"
+          head -20 products.json
+        else
+          echo "❌ products.json no encontrado"
+          exit 1
+        fi
+        
+    - name: Validar JSON
+      run: |
+        echo "Validando estructura de products.json..."
+        python3 -c "
+        import json
+        import sys
+        
+        try:
+            with open('products.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Verificar estructura básica
+            if 'products' not in data:
+                print('❌ Error: products.json debe contener un array \"products\"')
+                sys.exit(1)
+                
+            if not isinstance(data['products'], list):
+                print('❌ Error: \"products\" debe ser un array')
+                sys.exit(1)
+                
+            print(f'✅ products.json válido con {len(data[\"products\"])} productos')
+            
+            # Verificar campos obligatorios en cada producto
+            for i, product in enumerate(data['products']):
+                required_fields = ['id', 'name', 'description']
+                for field in required_fields:
+                    if field not in product:
+                        print(f'❌ Error: Producto {i} falta campo \"{field}\"')
+                        sys.exit(1)
+                        
+            print('✅ Todos los productos tienen los campos obligatorios')
+            
+        except json.JSONDecodeError as e:
+            print(f'❌ Error de JSON: {e}')
+            sys.exit(1)
+        except Exception as e:
+            print(f'❌ Error: {e}')
+            sys.exit(1)
+        "
+        
+    - name: Optimizar imágenes (si existen)
+      run: |
+        echo "Verificando imágenes..."
+        if [ -d "IMG" ]; then
+          echo "Directorio IMG encontrado:"
+          ls -la IMG/
+          
+          # Crear directorio optimizado si no existe
+          mkdir -p IMG/optimized
+          
+          # Copiar imágenes existentes (en un proyecto real aquí optimizarías)
+          if [ "$(ls -A IMG/)" ]; then
+            cp IMG/* IMG/optimized/ 2>/dev/null || true
+            echo "✅ Imágenes copiadas a directorio optimizado"
+          fi
+        else
+          echo "⚠️  Directorio IMG no encontrado"
+        fi
+        
+    - name: Generar sitemap
+      run: |
+        echo "Generando sitemap.xml..."
+        cat > sitemap.xml << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          <url>
+            <loc>https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/</loc>
+            <lastmod>$(date -u +%Y-%m-%dT%H:%M:%S+00:00)</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+          </url>
+          <url>
+            <loc>https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/admin-panel.html</loc>
+            <lastmod>$(date -u +%Y-%m-%dT%H:%M:%S+00:00)</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+          </url>
+        </urlset>
+        EOF
+        echo "✅ sitemap.xml generado"
+        
+    - name: Crear archivo de información de build
+      run: |
+        echo "Creando build-info.json..."
+        cat > build-info.json << EOF
+        {
+          "buildDate": "$(date -u +%Y-%m-%dT%H:%M:%S+00:00)",
+          "buildNumber": "${{ github.run_number }}",
+          "commit": "${{ github.sha }}",
+          "branch": "${{ github.ref_name }}",
+          "repository": "${{ github.repository }}",
+          "workflow": "${{ github.workflow }}"
+        }
+        EOF
+        echo "✅ build-info.json creado"
+        
+    - name: Verificar archivos finales
+      run: |
+        echo "Archivos listos para deploy:"
+        ls -la
+        echo ""
+        echo "Tamaño de archivos principales:"
+        du -h *.html *.js *.css *.json 2>/dev/null || true
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: github-pages
+        path: .
+
+  # Job para desplegar a GitHub Pages
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: github-pages
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload to Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      
+    - name: Notificar despliegue exitoso
+      run: |
+        echo "🚀 Despliegue completado exitosamente!"
+        echo "📄 URL del sitio: ${{ steps.deployment.outputs.page_url }}"
+        echo "📅 Fecha: $(date)"
+        echo "🔗 Commit: ${{ github.sha }}"
+        
+    - name: Crear comentario en PR (si es PR)
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && 
+            comment.body.includes('🚀 Preview del catálogo')
+          );
+          
+          const commentBody = `🚀 **Preview del catálogo actualizado**
+          
+          📄 **URL de preview:** ${{ steps.deployment.outputs.page_url }}
+          📅 **Fecha:** ${new Date().toLocaleString('es-ES')}
+          🔗 **Commit:** \`${{ github.sha }}\`
+          
+          ---
+          *Este preview se actualiza automáticamente con cada push a la rama main.*`;
+          
+          if (botComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body: commentBody
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: commentBody
+            });
+          }
