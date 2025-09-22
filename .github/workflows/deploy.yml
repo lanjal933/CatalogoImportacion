@@ -153,11 +153,7 @@ jobs:
         echo "Tamaño de archivos principales:"
         du -h *.html *.js *.css *.json 2>/dev/null || true
         
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: github-pages
-        path: .
+
 
   # Job para desplegar a GitHub Pages
   deploy:
@@ -181,9 +177,6 @@ jobs:
       with:
         path: '.'
         
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
       
     - name: Notificar despliegue exitoso
       run: |
